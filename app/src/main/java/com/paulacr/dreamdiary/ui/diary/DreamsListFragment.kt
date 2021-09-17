@@ -38,14 +38,6 @@ class DreamsListFragment : Fragment() {
         observeDreamsList()
         observeDreamsRemoval()
         viewModel.getDreams()
-
-        val localDateTime = LocalDateTime.now()
-        monthSelectorView.enableLeftArrow(false)
-        monthSelectorView.setupViewPager(
-            parentFragmentManager,
-            viewLifecycleOwner,
-            listOf(localDateTime, localDateTime, localDateTime, localDateTime)
-        )
     }
 
     override fun onResume() {
@@ -59,6 +51,7 @@ class DreamsListFragment : Fragment() {
                     it.data?.let { dreamsList ->
                         if (dreamsList.isNotEmpty()) {
                             setupDreamsList(dreamsList)
+                            setupMonthSelector(dreamsList)
                         } else {
                             showEmptyDreamsList()
                         }
@@ -69,6 +62,17 @@ class DreamsListFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupMonthSelector(dreamsList: List<Dream>) {
+        val datetimes: List<LocalDateTime> = dreamsList.map {
+            it.dateTime
+        }
+        monthSelectorView.setupViewPager(
+            parentFragmentManager,
+            viewLifecycleOwner,
+            datetimes
+        )
     }
 
     private fun observeDreamsRemoval() {

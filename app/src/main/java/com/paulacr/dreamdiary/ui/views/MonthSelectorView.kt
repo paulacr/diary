@@ -3,7 +3,6 @@ package com.paulacr.dreamdiary.ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -17,11 +16,9 @@ class MonthSelectorView @JvmOverloads constructor(
     val defStyle: Int = 0
 ) : ConstraintLayout(context, attributeSet, defStyle) {
 
-    private var monthSelector: TextView? = null
     private var leftArrow: ImageView? = null
     private var rightArrow: ImageView? = null
-    val currentYear = LocalDateTime.now().year
-    val currentMonth = LocalDateTime.now().month
+    private val monthSelectorManager = MonthSelectorManager()
 
     init {
         initView()
@@ -33,6 +30,14 @@ class MonthSelectorView @JvmOverloads constructor(
         rightArrow = view.findViewById(R.id.rightMonthSelector)
 
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.MonthSelector)
+
+        leftArrow?.setOnClickListener {
+            monthSelectorManager.navigate(direction = MonthSelectorManager.MonthDirection.PREVIOUS)
+        }
+
+        rightArrow?.setOnClickListener {
+            monthSelectorManager.navigate(direction = MonthSelectorManager.MonthDirection.NEXT)
+        }
         attributes.recycle()
     }
 
@@ -47,51 +52,24 @@ class MonthSelectorView @JvmOverloads constructor(
         )
         monthPager.adapter = pagerAdapter
         savedDateTime.map {
-            MonthSelectorFragment.newInstance(it.buildMonthWithYear())
+            MonthSelectorFragment.newInstance(monthSelectorManager.buildMonthWithYearText(it))
         }.apply {
             pagerAdapter.addFragmentsAtOnce(this)
         }
-    }
-
-    private fun LocalDateTime.buildMonthWithYear(): String {
-        return this.month.name
-            .take(3)
-            .lowercase()
-            .replaceFirstChar {
-                it.uppercase()
-            }
-            .plus(" / ")
-            .plus(this.year)
-    }
-
-    fun enableLeftArrow(enable: Boolean) {
-        if (enable) {
-            leftArrow?.alpha = 1f
-        } else {
-            leftArrow?.alpha = .1f
+        monthSelectorManager.buildMonthSelector(localDateTimeList = savedDateTime) { enableLeftArrow, enableRightArrow ->
+            enableLeftArrow(enableLeftArrow)
+            enableRightArrow(enableRightArrow)
         }
     }
 
-    fun enableRightArrow(enable: Boolean) {
-        if (enable) {
-            rightArrow?.alpha = 1f
-        } else {
-            rightArrow?.alpha = .1f
-        }
+
+    private fun enableLeftArrow(enable: Boolean) {
+        leftArrow?.isEnabled = enable
     }
 
-    fun navigate(direction: MonthDirection, monthsToDisplay: List<LocalDateTime>) {
-//        checkNavigation()
-
+    private fun enableRightArrow(enable: Boolean) {
+        rightArrow?.isEnabled = enable
     }
 
-    private fun checkNavigation(monthsToDisplay: List<LocalDateTime>) {
-        monthsToDisplay.firstOrNull()
-        monthsToDisplay
-    }
 
-    enum class MonthDirection {
-        UP,
-        DOWN
-    }
 }
