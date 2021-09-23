@@ -56,12 +56,11 @@ class MonthSelectorView @JvmOverloads constructor(
         }.apply {
             pagerAdapter.addFragmentsAtOnce(this)
         }
-        monthSelectorManager.buildMonthSelector(localDateTimeList = savedDateTime) { enableLeftArrow, enableRightArrow ->
-            enableLeftArrow(enableLeftArrow)
-            enableRightArrow(enableRightArrow)
+        monthSelectorManager.buildMonthSelector(localDateTimeList = savedDateTime) { shouldEnableLeftArrow, shouldEnableRightArrow ->
+            enableLeftArrow(shouldEnableLeftArrow)
+            enableRightArrow(shouldEnableRightArrow)
         }
     }
-
 
     private fun enableLeftArrow(enable: Boolean) {
         leftArrow?.isEnabled = enable
@@ -70,6 +69,4 @@ class MonthSelectorView @JvmOverloads constructor(
     private fun enableRightArrow(enable: Boolean) {
         rightArrow?.isEnabled = enable
     }
-
-
 }

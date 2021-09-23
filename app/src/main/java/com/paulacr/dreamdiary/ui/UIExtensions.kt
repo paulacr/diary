@@ -3,7 +3,6 @@ package com.paulacr.dreamdiary.ui
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.paulacr.dreamdiary.data.model.BaseModel
 
 fun View.gone() {
     this.visibility = View.GONE
