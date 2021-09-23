@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.paulacr.dreamdiary.R
 import com.paulacr.dreamdiary.data.model.Dream
 import com.paulacr.dreamdiary.ui.BaseAdapter

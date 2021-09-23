@@ -1,18 +1,17 @@
 package com.paulacr.dreamdiary.ui.diary
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paulacr.dreamdiary.data.model.Dream
-import com.paulacr.dreamdiary.data.repository.DreamListRepository
+import com.paulacr.domain.Dream
+import com.paulacr.domainmodule.DreamUseCase
 import com.paulacr.dreamdiary.ui.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DreamsListViewModel @Inject constructor(private val dreamsRepository: DreamListRepository) : ViewModel() {
+class DreamsListViewModel @Inject constructor(private val dreamUseCase: DreamUseCase) : ViewModel() {
 
     val dreamsLiveData = MutableLiveData<ViewState<List<Dream>>>()
     val removeDreamLiveData = MutableLiveData<ViewState<Long>>()
@@ -21,7 +20,7 @@ class DreamsListViewModel @Inject constructor(private val dreamsRepository: Drea
         dreamsLiveData.value = ViewState.Loading()
         viewModelScope.launch {
             try {
-                val dreams = dreamsRepository.getDreams()
+                val dreams = dreamUseCase.getDreams()
                 dreamsLiveData.value = ViewState.Success(dreams)
             } catch (exception: Exception) {
                 println()
@@ -32,7 +31,7 @@ class DreamsListViewModel @Inject constructor(private val dreamsRepository: Drea
     fun removeDream(dreamId: Long) {
         viewModelScope.launch {
             try {
-                dreamsRepository.removeDreamById(dreamId)
+                dreamUseCase.removeDreamById(dreamId)
                 removeDreamLiveData.value = ViewState.Success(dreamId)
             } catch (exception: Exception) {
                 println()

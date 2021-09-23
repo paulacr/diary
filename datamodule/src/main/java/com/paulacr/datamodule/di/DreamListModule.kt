@@ -1,7 +1,7 @@
-package com.paulacr.dreamdiary.di
+package com.paulacr.data.di
 
-import com.paulacr.dreamdiary.data.database.DreamDao
-import com.paulacr.dreamdiary.data.repository.DreamListRepository
+import com.paulacr.datamodule.database.DreamDao
+import com.paulacr.datamodule.repository.DreamListRepository
 import com.paulacr.dreamdiary.data.repository.DreamListRepositoryImpl
 import dagger.Module
 import dagger.Provides
