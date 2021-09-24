@@ -5,7 +5,10 @@ import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.firstLocalTime
 import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.firstSavedDate
 import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.lastLocalTime
 import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.lastSavedDate
-import junit.framework.Assert.*
+import com.paulacr.presentation.views.MonthSelectorManager
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertFalse
+import junit.framework.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDateTime
 
@@ -36,7 +39,7 @@ class MonthSelectorManagerTest {
 
         val currentDateTime = LocalDateTime.of(currentDate, firstLocalTime)
         MonthSelectorManager().buildMonthSelector(currentDateTime, localDateTimes) {
-                leftArrow, rightArrow ->
+            leftArrow, rightArrow ->
 
             assertFalse(leftArrow)
             assertTrue(rightArrow)
@@ -52,7 +55,7 @@ class MonthSelectorManagerTest {
         )
         val currentDateTime = LocalDateTime.of(currentDate, firstLocalTime)
         MonthSelectorManager().buildMonthSelector(currentDateTime, localDateTimes) {
-                leftArrow, rightArrow ->
+            leftArrow, rightArrow ->
 
             assertTrue(leftArrow)
             assertTrue(rightArrow)
