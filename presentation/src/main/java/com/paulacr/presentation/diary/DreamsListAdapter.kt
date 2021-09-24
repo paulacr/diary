@@ -90,6 +90,6 @@ class DreamsListAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return dreamItems[position].id?: 0
+        return dreamItems[position].id ?: 0
     }
 }

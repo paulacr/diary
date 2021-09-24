@@ -11,16 +11,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulacr.domain.Dream
 import com.paulacr.presentation.R
 import com.paulacr.presentation.ViewState
+import com.paulacr.presentation.databinding.FragmentDreamBottomSheetBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
 @AndroidEntryPoint
-class DreamItemBottomSheet : BottomSheetDialogFragment() {
+class AddDreamBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(dream: Dream): DreamItemBottomSheet {
+        fun newInstance(dream: Dream): AddDreamBottomSheet {
             val bundle = Bundle()
-            val fragment = DreamItemBottomSheet()
+            val fragment = AddDreamBottomSheet()
 
             bundle.putSerializable("dream", dream)
             fragment.arguments = bundle
@@ -28,23 +29,24 @@ class DreamItemBottomSheet : BottomSheetDialogFragment() {
             return fragment
         }
 
-        fun newInstance(): DreamItemBottomSheet {
-            return DreamItemBottomSheet()
+        fun newInstance(): AddDreamBottomSheet {
+            return AddDreamBottomSheet()
         }
     }
 
     private var addNewItemButton: Button? = null
     private val viewModel: AddDreamViewModel by viewModels()
+    private lateinit var binding: FragmentDreamBottomSheetBinding
     val addNewDreamLiveData = MutableLiveData<com.paulacr.domain.Dream>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_dream_bottom_sheet, container, false)
-        addNewItemButton = view.findViewById(R.id.addDreamButton)
-        return view
+    ): View {
+        binding = FragmentDreamBottomSheetBinding.inflate(layoutInflater)
+        addNewItemButton = binding.addDreamButton
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,11 +83,11 @@ class DreamItemBottomSheet : BottomSheetDialogFragment() {
 
             val emojis = listOf(R.drawable.ic_shocked, R.drawable.ic_in_love, R.drawable.ic_happy)
 
-//            viewModel.addNewItem(
-//                dateTime = getDateTime(),
-//                descriptionText = descriptionAddText.text.toString(),
-//                emoji = emojis.random()
-//            )
+            viewModel.addNewItem(
+                dateTime = getDateTime(),
+                descriptionText = binding.descriptionAddText.text.toString(),
+                emoji = emojis.random()
+            )
         }
     }
 
@@ -93,5 +95,3 @@ class DreamItemBottomSheet : BottomSheetDialogFragment() {
         return LocalDateTime.now()
     }
 }
-
-

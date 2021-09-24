@@ -9,8 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.paulacr.domain.Dream
-import com.paulacr.presentation.*
+import com.paulacr.presentation.R
+import com.paulacr.presentation.ViewState
 import com.paulacr.presentation.databinding.FragmentDreamsListsBinding
+import com.paulacr.presentation.gone
+import com.paulacr.presentation.setupRemoveItemsHelper
+import com.paulacr.presentation.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
@@ -18,7 +22,7 @@ import java.time.LocalDateTime
 class DreamsListFragment : Fragment() {
 
     private val viewModel: DreamsListViewModel by viewModels()
-    private var adapter: DreamsListAdapter? = null
+    private var dreamsListAdapter: DreamsListAdapter? = null
     private lateinit var binding: FragmentDreamsListsBinding
 
     override fun onCreateView(
@@ -75,8 +79,8 @@ class DreamsListFragment : Fragment() {
                 is ViewState.Success -> {
                     it.data?.let { id ->
                         dismissLoading()
-                        adapter?.removeDreamById(id)
-                        if (adapter?.itemCount == 0) {
+                        dreamsListAdapter?.removeDreamById(id)
+                        if (dreamsListAdapter?.itemCount == 0) {
                             showEmptyDreamsList()
                         }
                     }
@@ -87,27 +91,25 @@ class DreamsListFragment : Fragment() {
                 }
 
                 is ViewState.Error -> {
-
                 }
             }
         }
     }
 
     private fun setupDreamsList(dreams: List<Dream>) {
-        if (adapter == null) {
-            adapter = DreamsListAdapter(dreams) {
+        if (dreamsListAdapter == null) {
+            dreamsListAdapter = DreamsListAdapter(dreams) {
                 expandDreamItemBottomSheet()
             }
             with(binding.dreamsList) {
-//                adapter?.setupRemoveItemsHelper(this) { adapterPosition: Int, dreamId: Long ->
-//                    viewModel.removeDream(dreamId)
-//                }
+                dreamsListAdapter.setupRemoveItemsHelper(this) { adapterPosition: Int, dreamId: Long ->
+                    viewModel.removeDream(dreamId)
+                }
                 layoutManager = LinearLayoutManager(context)
-                adapter = adapter
+                adapter = dreamsListAdapter
             }
-
         } else {
-            adapter?.insertDreamsList(dreams)
+            dreamsListAdapter?.insertDreamsList(dreams)
         }
         showDreamsList()
     }
@@ -120,13 +122,13 @@ class DreamsListFragment : Fragment() {
     }
 
     private fun expandDreamItemBottomSheet() {
-        val fragment = DreamItemBottomSheet.newInstance()
+        val fragment = AddDreamBottomSheet.newInstance()
         fragment.addNewDreamLiveData.observe(viewLifecycleOwner, {
-            //added new item // update recyclerview
-            if (adapter == null) {
+            // added new item // update recyclerview
+            if (dreamsListAdapter == null) {
                 setupDreamsList(listOf(it))
             } else {
-                adapter?.insertNewDream(it)
+                dreamsListAdapter?.insertNewDream(it)
             }
         })
         fragment.show(parentFragmentManager, "")

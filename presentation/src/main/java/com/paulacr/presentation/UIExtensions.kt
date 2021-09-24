@@ -10,7 +10,7 @@ fun View.gone() {
 }
 
 fun View.visible() {
-   this.visibility = View.VISIBLE
+    this.visibility = View.VISIBLE
 }
 
 fun ViewBinding.gone() {
@@ -21,7 +21,7 @@ fun ViewBinding.visible() {
     this.root.visibility = View.VISIBLE
 }
 
-fun BaseAdapter<*>.setupRemoveItemsHelper(recyclerView: RecyclerView, onItemRemoved: (position: Int, dreamId: Long)  -> Unit) {
+fun BaseAdapter<BaseViewHolder<*>>?.setupRemoveItemsHelper(recyclerView: RecyclerView, onItemRemoved: (position: Int, dreamId: Long) -> Unit) {
 
     val itemTouchHelper = object :
         ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -35,7 +35,7 @@ fun BaseAdapter<*>.setupRemoveItemsHelper(recyclerView: RecyclerView, onItemRemo
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             viewHolder.adapterPosition.run {
-                onItemRemoved(this, this@setupRemoveItemsHelper.getItemId(this))
+                onItemRemoved(this, this@setupRemoveItemsHelper!!.getItemId(this))
             }
         }
     }

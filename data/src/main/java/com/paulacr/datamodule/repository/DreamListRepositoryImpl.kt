@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DreamListRepositoryImpl @Inject constructor(
     private val dreamDao: DreamDao
-): DreamListRepository {
+) : DreamListRepository {
     override suspend fun getDreams(): List<Dream>? {
         return DreamMapper.map(dreamDao.getAll())
     }
@@ -24,5 +24,4 @@ class DreamListRepositoryImpl @Inject constructor(
     override suspend fun removeDreamById(dreamId: Long) {
         return dreamDao.deleteDreamById(dreamId)
     }
-
 }

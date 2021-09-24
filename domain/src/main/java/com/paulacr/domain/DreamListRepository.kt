@@ -9,5 +9,4 @@ interface DreamListRepository {
     suspend fun removeDream(dream: Dream)
 
     suspend fun removeDreamById(dreamId: Long)
-
 }

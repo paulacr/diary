@@ -8,4 +8,4 @@ data class Dream(
     val dateTime: LocalDateTime,
     val description: String,
     val emoji: Int? = null
-): Serializable
+) : Serializable

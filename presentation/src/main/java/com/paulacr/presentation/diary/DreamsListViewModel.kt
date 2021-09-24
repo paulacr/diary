@@ -40,6 +40,5 @@ class DreamsListViewModel @Inject constructor(private val dreamUseCase: DreamUse
     }
 
     fun changeMonth() {
-
     }
 }
