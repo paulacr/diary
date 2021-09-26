@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -12,6 +12,8 @@ import com.paulacr.domain.Dream
 import com.paulacr.presentation.R
 import com.paulacr.presentation.ViewState
 import com.paulacr.presentation.databinding.FragmentDreamBottomSheetBinding
+import com.paulacr.presentation.gone
+import com.paulacr.presentation.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
@@ -34,18 +36,22 @@ class AddDreamBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private var addNewItemButton: Button? = null
     private val viewModel: AddDreamViewModel by viewModels()
     private lateinit var binding: FragmentDreamBottomSheetBinding
-    val addNewDreamLiveData = MutableLiveData<com.paulacr.domain.Dream>()
+    private var dream: Dream? = null
+    val addNewDreamLiveData = MutableLiveData<Dream>()
+    val removeDreamLiveData = MutableLiveData<Dream>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDreamBottomSheetBinding.inflate(layoutInflater)
-        addNewItemButton = binding.addDreamButton
         return binding.root
     }
 
@@ -57,13 +63,20 @@ class AddDreamBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
-        val args = arguments?.get("dream")
-        if (args != null) {
-            "Save again"
-        } else {
-            "Add new dream"
-        }.apply {
-            addNewItemButton?.text = this
+        dream = arguments?.get("dream") as Dream?
+        with(binding) {
+            dream?.let { dream ->
+                deleteButton.visible()
+                descriptionAddText.setText(dream.description)
+                addDreamButton.text = "Save again"
+            }?: run {
+                deleteButton.gone()
+                addDreamButton.text = "Add new Dream"
+            }
+        }
+
+        binding.deleteButton.setOnClickListener {
+            dream?.id?.let { id -> viewModel.removeDream(id) }
         }
     }
 
@@ -76,10 +89,19 @@ class AddDreamBottomSheet : BottomSheetDialogFragment() {
                 }
             }
         })
+
+        viewModel.removeDreamLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is ViewState.Success -> it.data?.let { item ->
+                    removeDreamLiveData.value = item
+                    dialog?.dismiss()
+                }
+            }
+        })
     }
 
     private fun setupAddDreamClickListener() {
-        addNewItemButton?.setOnClickListener {
+        binding.addDreamButton.setOnClickListener {
 
             val emojis = listOf(R.drawable.ic_shocked, R.drawable.ic_in_love, R.drawable.ic_happy)
 

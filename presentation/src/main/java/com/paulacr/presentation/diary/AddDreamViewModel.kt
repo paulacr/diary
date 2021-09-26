@@ -15,6 +15,7 @@ class AddDreamViewModel @Inject constructor(private val dreamUseCase: com.paulac
     ViewModel() {
 
     val addNewItemLiveData = MutableLiveData<ViewState<Dream>>()
+    val removeDreamLiveData = MutableLiveData<ViewState<Dream>>()
 
     fun addNewItem(dateTime: LocalDateTime, descriptionText: String, emoji: Int) {
 
@@ -28,6 +29,18 @@ class AddDreamViewModel @Inject constructor(private val dreamUseCase: com.paulac
                 )
                 dreamUseCase.invoke(dream)
                 addNewItemLiveData.value = ViewState.Success(dream)
+            } catch (ex: Exception) {
+                addNewItemLiveData.value = ViewState.Error(ex)
+            }
+        }
+    }
+
+    fun removeDream(dreamId: Long) {
+        removeDreamLiveData.value = ViewState.Loading()
+        viewModelScope.launch {
+            try {
+                dreamUseCase.invoke(dreamId)
+                addNewItemLiveData.value = ViewState.Success(null)
             } catch (ex: Exception) {
                 addNewItemLiveData.value = ViewState.Error(ex)
             }

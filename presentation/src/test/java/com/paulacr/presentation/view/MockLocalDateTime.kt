@@ -1,4 +1,4 @@
-package com.paulacr.dreamdiary.ui.views
+package com.paulacr.presentation.view
 
 import java.time.LocalDate
 import java.time.LocalTime

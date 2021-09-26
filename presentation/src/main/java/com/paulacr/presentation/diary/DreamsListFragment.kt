@@ -9,12 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.paulacr.domain.Dream
-import com.paulacr.presentation.R
-import com.paulacr.presentation.ViewState
+import com.paulacr.presentation.*
 import com.paulacr.presentation.databinding.FragmentDreamsListsBinding
-import com.paulacr.presentation.gone
-import com.paulacr.presentation.setupRemoveItemsHelper
-import com.paulacr.presentation.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 
@@ -42,7 +38,7 @@ class DreamsListFragment : Fragment() {
     }
 
     private fun observeDreamsList() {
-        viewModel.dreamsLiveData.observe(viewLifecycleOwner, {
+        observe(viewModel.dreamsLiveData) {
             when (it) {
                 is ViewState.Success -> {
                     it.data?.let { dreamsList ->
@@ -58,7 +54,7 @@ class DreamsListFragment : Fragment() {
                     showLoading()
                 }
             }
-        })
+        }
     }
 
     private fun setupMonthSelector(dreamsList: List<Dream>) {
@@ -99,7 +95,7 @@ class DreamsListFragment : Fragment() {
     private fun setupDreamsList(dreams: List<Dream>) {
         if (dreamsListAdapter == null) {
             dreamsListAdapter = DreamsListAdapter(dreams) {
-                expandDreamItemBottomSheet()
+                expandDreamItemBottomSheet(it)
             }
             with(binding.dreamsList) {
                 dreamsListAdapter.setupRemoveItemsHelper(this) { adapterPosition: Int, dreamId: Long ->
@@ -121,16 +117,27 @@ class DreamsListFragment : Fragment() {
         }
     }
 
-    private fun expandDreamItemBottomSheet() {
-        val fragment = AddDreamBottomSheet.newInstance()
-        fragment.addNewDreamLiveData.observe(viewLifecycleOwner, {
-            // added new item // update recyclerview
+    private fun expandDreamItemBottomSheet(dream: Dream? = null) {
+
+        val fragment: AddDreamBottomSheet = if (dream == null) {
+            AddDreamBottomSheet.newInstance()
+        } else {
+            AddDreamBottomSheet.newInstance(dream)
+        }
+        observe(fragment.addNewDreamLiveData) {
             if (dreamsListAdapter == null) {
                 setupDreamsList(listOf(it))
             } else {
                 dreamsListAdapter?.insertNewDream(it)
             }
-        })
+        }
+
+        observe(fragment.removeDreamLiveData) {
+            it.id?.let { dreamId ->
+                dreamsListAdapter?.removeDreamById(dreamId)
+            }
+        }
+
         fragment.show(parentFragmentManager, "")
     }
 
@@ -155,6 +162,7 @@ class DreamsListFragment : Fragment() {
             viewLoading.gone()
             viewEmptyDreamsList.visible()
             dreamsList.gone()
+            monthSelectorView.gone()
         }
     }
 
@@ -163,6 +171,7 @@ class DreamsListFragment : Fragment() {
             viewLoading.gone()
             viewEmptyDreamsList.gone()
             dreamsList.visible()
+            monthSelectorView.visible()
         }
     }
 }

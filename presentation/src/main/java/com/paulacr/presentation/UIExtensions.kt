@@ -1,6 +1,8 @@
 package com.paulacr.presentation
 
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -42,3 +44,8 @@ fun BaseAdapter<BaseViewHolder<*>>?.setupRemoveItemsHelper(recyclerView: Recycle
 
     ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView)
 }
+
+fun <T>Fragment.observe(liveData: LiveData<T>, block: (T) -> Unit) {
+    liveData.observe(viewLifecycleOwner, block)
+}
+

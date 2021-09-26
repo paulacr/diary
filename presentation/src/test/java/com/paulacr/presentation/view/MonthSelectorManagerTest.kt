@@ -1,10 +1,10 @@
-package com.paulacr.dreamdiary.ui.views
+package com.paulacr.presentation.view
 
-import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.currentDate
-import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.firstLocalTime
-import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.firstSavedDate
-import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.lastLocalTime
-import com.paulacr.dreamdiary.ui.views.MockLocalDateTime.lastSavedDate
+import com.paulacr.presentation.view.MockLocalDateTime.currentDate
+import com.paulacr.presentation.view.MockLocalDateTime.firstLocalTime
+import com.paulacr.presentation.view.MockLocalDateTime.firstSavedDate
+import com.paulacr.presentation.view.MockLocalDateTime.lastLocalTime
+import com.paulacr.presentation.view.MockLocalDateTime.lastSavedDate
 import com.paulacr.presentation.views.MonthSelectorManager
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertFalse
@@ -64,7 +64,7 @@ class MonthSelectorManagerTest {
 
     @Test
     fun buildDateTextTest() {
-        val datetime = LocalDateTime.of(MockLocalDateTime.currentDate, firstLocalTime)
+        val datetime = LocalDateTime.of(currentDate, firstLocalTime)
         val dateText = MonthSelectorManager().buildMonthWithYearText(datetime)
 
         assertEquals("May / 2021", dateText)
