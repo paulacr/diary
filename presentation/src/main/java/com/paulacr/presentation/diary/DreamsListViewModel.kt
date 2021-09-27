@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DreamsListViewModel @Inject constructor(private val dreamUseCase: DreamUseCase) : ViewModel() {
+class DreamsListViewModel @Inject constructor(
+    private val dreamUseCase: DreamUseCase
+) : ViewModel() {
 
     val dreamsLiveData = MutableLiveData<ViewState<List<Dream>>>()
     val removeDreamLiveData = MutableLiveData<ViewState<Long>>()
@@ -19,26 +21,27 @@ class DreamsListViewModel @Inject constructor(private val dreamUseCase: DreamUse
     fun getDreams() {
         dreamsLiveData.value = ViewState.Loading()
         viewModelScope.launch {
-            try {
-                val dreams = dreamUseCase.invoke()
-                dreamsLiveData.value = ViewState.Success(dreams)
-            } catch (exception: Exception) {
-                println()
-            }
+            invokeDreamsList()
+        }
+    }
+
+    private suspend fun invokeDreamsList() {
+        try {
+            val dreams = dreamUseCase()
+            dreamsLiveData.value = ViewState.Success(dreams)
+        } catch (exception: Exception) {
+            println("Dreams -> ex = $exception")
         }
     }
 
     fun removeDream(dreamId: Long) {
         viewModelScope.launch {
             try {
-                dreamUseCase.invoke(dreamId)
+                dreamUseCase(dreamId)
                 removeDreamLiveData.value = ViewState.Success(dreamId)
             } catch (exception: Exception) {
                 println()
             }
         }
-    }
-
-    fun changeMonth() {
     }
 }

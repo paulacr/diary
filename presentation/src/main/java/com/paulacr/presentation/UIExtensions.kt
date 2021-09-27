@@ -45,7 +45,6 @@ fun BaseAdapter<BaseViewHolder<*>>?.setupRemoveItemsHelper(recyclerView: Recycle
     ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView)
 }
 
-fun <T>Fragment.observe(liveData: LiveData<T>, block: (T) -> Unit) {
+fun <T> Fragment.observe(liveData: LiveData<T>, block: (T) -> Unit) {
     liveData.observe(viewLifecycleOwner, block)
 }
-

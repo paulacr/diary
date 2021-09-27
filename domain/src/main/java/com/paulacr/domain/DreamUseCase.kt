@@ -1,6 +1,6 @@
 package com.paulacr.domain
 
-class DreamUseCase constructor(private val dreamRepository: DreamListRepository) {
+open class DreamUseCase constructor(private val dreamRepository: DreamListRepository) {
 
     suspend operator fun invoke(): List<Dream>? {
         return dreamRepository.getDreams()

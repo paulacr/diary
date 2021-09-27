@@ -6,7 +6,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.paulacr.domain.DreamListRepository
 import com.paulacr.domain.DreamUseCase
 import com.paulacr.presentation.diary.DreamsListFragment
@@ -17,11 +16,9 @@ import io.mockk.coEvery
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import javax.inject.Inject
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 class DreamsListFragmentTest {
 
     @Inject
@@ -40,18 +37,22 @@ class DreamsListFragmentTest {
     }
 
     @Test
+    fun testLaunchFragmentInHiltContainer() {
+
+        launchFragmentInHiltContainer<DreamsListFragment>()
+    }
+
+    @Test
     fun showEmptyStateWhenThereAreNoData() {
         launchFragmentInContainer<DreamsListFragment>(
             initialState = Lifecycle.State.INITIALIZED
         )
         // Given
-        coEvery { useCase.invoke() } returns MockDreams.dreamsList
+        coEvery { useCase() } returns MockDreams.dreamsList
 
         // When
 
         // Then
         onView(withId(R.id.viewEmptyDreamsList)).check(matches(isDisplayed()))
     }
-
-
 }

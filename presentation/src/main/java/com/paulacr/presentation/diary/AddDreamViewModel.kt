@@ -27,10 +27,10 @@ class AddDreamViewModel @Inject constructor(private val dreamUseCase: com.paulac
                     description = descriptionText,
                     emoji = emoji
                 )
-                dreamUseCase.invoke(dream)
+                dreamUseCase(dream)
                 addNewItemLiveData.value = ViewState.Success(dream)
             } catch (ex: Exception) {
-                addNewItemLiveData.value = ViewState.Error(ex)
+                addNewItemLiveData.value = ViewState.Error(exception = ex)
             }
         }
     }
@@ -39,10 +39,10 @@ class AddDreamViewModel @Inject constructor(private val dreamUseCase: com.paulac
         removeDreamLiveData.value = ViewState.Loading()
         viewModelScope.launch {
             try {
-                dreamUseCase.invoke(dreamId)
+                dreamUseCase(dreamId)
                 addNewItemLiveData.value = ViewState.Success(null)
             } catch (ex: Exception) {
-                addNewItemLiveData.value = ViewState.Error(ex)
+                addNewItemLiveData.value = ViewState.Error(exception = ex)
             }
         }
     }

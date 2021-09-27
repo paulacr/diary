@@ -1,10 +1,10 @@
 package com.paulacr.presentation.view
 
-import com.paulacr.presentation.view.MockLocalDateTime.currentDate
-import com.paulacr.presentation.view.MockLocalDateTime.firstLocalTime
-import com.paulacr.presentation.view.MockLocalDateTime.firstSavedDate
-import com.paulacr.presentation.view.MockLocalDateTime.lastLocalTime
-import com.paulacr.presentation.view.MockLocalDateTime.lastSavedDate
+import com.paulacr.presentation.MockObjects.currentDate
+import com.paulacr.presentation.MockObjects.firstLocalTime
+import com.paulacr.presentation.MockObjects.firstSavedDate
+import com.paulacr.presentation.MockObjects.lastLocalTime
+import com.paulacr.presentation.MockObjects.lastSavedDate
 import com.paulacr.presentation.views.MonthSelectorManager
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertFalse

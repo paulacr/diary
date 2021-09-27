@@ -69,7 +69,7 @@ class AddDreamBottomSheet : BottomSheetDialogFragment() {
                 deleteButton.visible()
                 descriptionAddText.setText(dream.description)
                 addDreamButton.text = "Save again"
-            }?: run {
+            } ?: run {
                 deleteButton.gone()
                 addDreamButton.text = "Add new Dream"
             }
