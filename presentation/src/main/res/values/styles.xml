@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Button">
+        <item name="android:gravity">center</item>
+        <item name="background">@color/purple_700</item>
+        <item name="android:textColor">@color/teal_700</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MyBottomSheetStyle" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_700</item>
+    </style>
+
+    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="buttonStyle">@style/Button</item>
+    </style>
+</resources>

@@ -2,8 +2,7 @@ package com.paulacr.dreamdiary.di
 
 import android.content.Context
 import androidx.room.Room
-import com.paulacr.dreamdiary.data.database.AppDatabase
-import com.paulacr.dreamdiary.data.database.DreamDao
+import com.paulacr.datamodule.database.DreamDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

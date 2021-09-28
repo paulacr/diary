@@ -1,8 +1,9 @@
 package com.paulacr.dreamdiary.di
 
-import com.paulacr.dreamdiary.data.database.DreamDao
-import com.paulacr.dreamdiary.data.repository.DreamListRepository
-import com.paulacr.dreamdiary.data.repository.DreamListRepositoryImpl
+import com.paulacr.datamodule.database.DreamDao
+import com.paulacr.datamodule.repository.DreamListRepositoryImpl
+import com.paulacr.domain.DreamListRepository
+import com.paulacr.domain.DreamUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,12 @@ import dagger.hilt.components.SingletonComponent
 class DreamListModule {
 
     @Provides
-    fun provideDreamRepository(dreamDao: DreamDao) : DreamListRepository {
+    fun provideDreamRepository(dreamDao: DreamDao): DreamListRepository {
         return DreamListRepositoryImpl(dreamDao)
+    }
+
+    @Provides
+    fun provideUseCase(repository: DreamListRepository): DreamUseCase {
+        return DreamUseCase(repository)
     }
 }
