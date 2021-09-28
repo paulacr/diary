@@ -7,17 +7,30 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.paulacr.domain.DreamListRepository
+import com.paulacr.domain.DreamUseCase
 import com.paulacr.presentation.dashboard.DashboardFragment
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class DashboardFragmentTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @Before
     fun init() {
-//        MockKAnnotations.init(this, true)
+        hiltRule.inject()
+        MockKAnnotations.init(this, true)
     }
 
     @Test
@@ -26,6 +39,7 @@ class DashboardFragmentTest {
             initialState = Lifecycle.State.RESUMED
         )
         // Given
+
 
         // When
 

@@ -37,12 +37,6 @@ class DreamsListFragmentTest {
     }
 
     @Test
-    fun testLaunchFragmentInHiltContainer() {
-
-        launchFragmentInHiltContainer<DreamsListFragment>()
-    }
-
-    @Test
     fun showEmptyStateWhenThereAreNoData() {
         launchFragmentInContainer<DreamsListFragment>(
             initialState = Lifecycle.State.INITIALIZED
