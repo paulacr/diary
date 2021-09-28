@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DreamDiary</string>
+    <string name="title_dreams_list">Dreams Diary</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="add_new_dream">Add new dream</string>
+</resources>
